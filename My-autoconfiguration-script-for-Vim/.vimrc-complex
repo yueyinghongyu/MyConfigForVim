@@ -1,0 +1,114 @@
+"" vim:ft=vim
+
+autocmd BufRead,BufNewFile *.yrl,*.escript,*.es setlocal filetype=erlang
+autocmd BufRead,BufNewFile *.pl,*.pro setlocal filetype=prolog
+autocmd BufRead,BufNewFile *.e setlocal filetype=elang
+autocmd BufRead,BufNewFile *.S,*.s,*.asm setlocal filetype=asm
+autocmd BufRead,BufNewFile *.hex,*.ihx setlocal filetype=hex
+"autocmd BufRead,BufNewFile * colorscheme default
+
+set nocompatible nosmartindent autoindent noincsearch title ruler modeline modelines=6 laststatus=0 belloff=all
+set fileencodings=utf-8,latin-1,chinese,gbk,gb2312,gb18030 encoding=utf-8 langmenu=none
+
+" 设置 Vim 的语言环境为 C，这会影响自动缩进和其他语言相关的选项。
+language C
+
+"" "jumpoptions=stack" is not supported in old Vim. (older than Vim 9.0.1921)
+set jumpoptions=stack
+
+" 这个命令启用了 Vim 的文件类型检测和插件。filetype 会根据文件的类型自动加载相应的语法高亮和缩进规则，plugin 会加载额外的插件。
+filetype plugin on
+
+" 这个命令配置了 Vim 的自动补全行为。completeopt 选项用于控制自动补全的各种特性。longest：这个参数告诉 Vim 在自动补全时总是选择最长的匹配项。这样做可以减少用户输入的字符数，因为 Vim 会自动补全到最具体的匹配。menu：这个参数启用了补全菜单。当有多个补全选项时，Vim 会显示一个菜单让用户选择。这使得在多个匹配项中选择变得更加容易和直观。
+set completeopt=longest,menu
+
+" 这个命令启用了语法高亮。
+syntax on
+
+" 这个命令将错误高亮设置为不显示（NONE），这意味着 Vim 不会突出显示错误。
+highlight Error NONE
+
+
+call plug#begin('~/.vim/plugged')
+Plug 'itchyny/lightline.vim'
+Plug 'preservim/nerdtree'
+Plug 'luochen1990/rainbow'
+Plug 'mhinz/vim-startify'
+Plug 'preservim/nerdcommenter'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+call plug#end()
+
+" 在插入模式下，将回车键映射为如果coc的预览窗口（pum）可见，则确认选择，否则执行默认的回车行为。
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<cr>"
+" 在普通模式下，将 <space>? 映射为异步调用 CocAction 来显示悬停信息。
+nnoremap <silent> <space>? :call CocActionAsync("doHover")<cr>
+
+" 在普通模式下，将 <c-d> 映射为如果有滚动的浮动窗口，则向下滚动，否则执行默认的 <c-d> 行为。
+nnoremap <expr> <c-d> coc#float#has_scroll() ? coc#float#scroll(1, 1) : "\<c-d>"
+" 在普通模式下，将 <c-u> 映射为如果有滚动的浮动窗口，则向上滚动，否则执行默认的 <c-u> 行为。
+nnoremap <expr> <c-u> coc#float#has_scroll() ? coc#float#scroll(0, 1) : "\<c-u>"
+
+nmap <space>d <Plug>(coc-definition)
+nmap <space>r <Plug>(coc-references)
+nmap <space>t <Plug>(coc-type-definition)
+nmap <space>i <Plug>(coc-implementation)
+nmap <space>2 <Plug>(coc-rename)
+nmap <space>h <Plug>(coc-diagnostic-prev)
+nmap <space>l <Plug>(coc-diagnostic-next)
+nmap <space>p <Plug>(coc-format)
+
+nnoremap <space>f :FZF<cr>
+
+"let g:rust_recommended_style = 0
+" 设置 Markdown 语言的推荐样式为关闭。
+let g:markdown_recommended_style = 0
+"" Compound literals is not well supported by the default vim syntax for C yet.|设置 c_no_curly_error 为 1，这会禁止 Vim 在 C 语言中因为缺少花括号而报错。
+let g:c_no_curly_error = 1
+
+
+" ==== 以下这部分用于设置一些插件的参数
+
+" ==== preservim/nerdcommenter ====
+"  这个设置使得 NERDCommenter 在注释时会在注释符号和注释文本之间添加空格，例如在 HTML 中生成 <!-- comment -->。
+let g:NERDSpaceDelims = 1
+"  这个设置使得 NERDCommenter 生成的注释更加紧凑，没有额外的空格，例如 // comment。
+let g:NERDCompactSexyComs = 1
+"  设置默认的注释对齐方式为左对齐。
+let g:NERDDefaultAlign = 'left'
+"  当这个设置开启时，NERDCommenter 会检查整行是否已经包含注释，而不仅仅是光标所在位置。
+let g:NERDToogleCheckAllLines = 1
+
+" ==== preservim/nerdtree ====
+"  这个映射在普通模式下将 <Leader>e 键(即"\")绑定到 NERDTree 的 :NERDTreeToggle 命令，用于打开或关闭 NERDTree 窗口。
+nnoremap <LEADER>e :NERDTreeToggle<CR>
+" 这是一个自动命令，当 Vim 启动并且 NERDTree 是唯一的窗口时，它会自动关闭 Vim。
+autocmd vimenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q |endif
+
+" ==== itchyny/lightline.vim ====
+"  设置状态栏始终显示，即使只有一个窗口也是如此。
+set laststatus=2
+"  如果当前 Vim 没有运行在图形界面下，设置终端支持 256 色，以便 Lightline 可以显示更多颜色。
+if !has('gui_running')
+    set t_Co=256
+endif
+" -- INSERT -- is unnecessary anymore because the mode infomation is displayed
+"  in the statusline.
+"  这个设置用于关闭模式信息的显示，因为 Lightline 已经在状态栏中显示了模式信息。
+set noshowmode
+
+" ==== luochen1990/rainbow ====
+"  这个设置启用了 Rainbow 插件，使得 Vim 会高亮显示匹配的括号。
+let g:rainbow_active = 1
+
+
+
+" 插件说明|Plugin description
+" Lightline.vim 是一个轻量级的状态栏插件，它提供了一种优雅的方式来显示 Vim 的状态信息，如文件名、文件状态、模式等。
+" NERDTree 是一个文件系统浏览器插件，它允许你在 Vim 中浏览文件系统，打开文件，创建、删除文件和目录等。
+" Rainbow 是一个语法高亮插件，它在 Vim 中为代码中的彩虹括号（即嵌套的括号）提供不同颜色，使得匹配的括号更容易区分。
+" vim-startify 是一个启动屏幕插件，它定制了 Vim 的启动屏幕，提供了最近使用的文件列表、书签、会话等信息。
+" NERDCommenter 是一个代码注释插件，它提供了快速注释和取消注释代码的快捷方式，支持多种编程语言。
+" coc.nvim 是一个强大的语言客户端框架，它支持 Language Server Protocol (LSP)，提供了自动补全、代码导航、代码动作、重构等高级编辑功能。
+" fzf 是一个命令行模糊搜索工具，它非常快速且用户友好。在 Vim 中，fzf 可以用来搜索文件、命令、缓冲区等。{ 'do': { -> fzf#install() } } 指定了一个安装后的钩子，用于安装 fzf 的相关文件和资源。
+
