@@ -17,7 +17,10 @@ set ruler
 " 在底部显示正在输入的命令。
 set showcmd
 " 禁用超时设置，这意味着某些命令的超时限制将被取消。
-set notimeout
+"set notimeout
+" 设置 timeoutlen 来调整 Vim
+" 在插入模式下等待用户输入的时间为100毫秒，这样空格键就有100毫秒的延迟才会移动下一格了
+set timeoutlen=100
 " 启用鼠标支持，在所有模式下都可以使用鼠标。
 set mouse=a
 " 设置 Vim 使用无名寄存器作为系统剪贴板。

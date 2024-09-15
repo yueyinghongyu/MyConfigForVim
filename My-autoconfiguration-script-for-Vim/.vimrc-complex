@@ -85,6 +85,8 @@ nnoremap <LEADER>e :NERDTreeToggle<CR>
 " 这是一个自动命令，当 Vim 启动并且 NERDTree 是唯一的窗口时，它会自动关闭 Vim。
 autocmd vimenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q |endif
 
+let NERDTreeIgnore = []
+
 " ==== itchyny/lightline.vim ====
 "  设置状态栏始终显示，即使只有一个窗口也是如此。
 set laststatus=2
@@ -100,7 +102,6 @@ set noshowmode
 " ==== luochen1990/rainbow ====
 "  这个设置启用了 Rainbow 插件，使得 Vim 会高亮显示匹配的括号。
 let g:rainbow_active = 1
-
 
 
 " 插件说明|Plugin description
