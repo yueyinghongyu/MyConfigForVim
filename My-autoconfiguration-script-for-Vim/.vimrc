@@ -78,4 +78,4 @@ nnoremap bd d$a
 nnoremap <c->r :redo<cr>i<Right>
 
 " 这是一个被注释掉的命令，如果取消注释（去掉前面的双引号），它会执行 source 命令来加载用户主目录下的 .vim-complex 文件。这个文件可能包含更复杂的 Vim 配置。
-source ~/.vimrc-complex
+"source ~/.vimrc-complex
