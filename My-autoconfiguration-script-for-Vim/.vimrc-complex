@@ -85,7 +85,7 @@ nnoremap <LEADER>e :NERDTreeToggle<CR>
 " 这是一个自动命令，当 Vim 启动并且 NERDTree 是唯一的窗口时，它会自动关闭 Vim。
 autocmd vimenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q |endif
 
-let NERDTreeIgnore = []
+" Shift + i | I 可以让NERDTree的当前目录显示所有文件, 包括隐藏文件
 
 " ==== itchyny/lightline.vim ====
 "  设置状态栏始终显示，即使只有一个窗口也是如此。
