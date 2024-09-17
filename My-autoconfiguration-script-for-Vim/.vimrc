@@ -67,19 +67,15 @@ inoremap <space><Tab>   <C-O><C-W>w
 nnoremap <space><S-Tab> <C-W>W
 inoremap <space><S-Tab> <C-O><C-W>W
 
-" ==== 我自己设置的快捷键(注意: 插入模式下为避免误触快捷键需要按两次空格键) ====
-"  用于在正常|插入模式下三击<;:>键进入底行模式
-nnoremap ;;; :
-inoremap ;;; <esc>:
-"  用于在正常|插入模式下将光标后面所有的文字删除, 仅限于光标所在行
-nnoremap <space>dd d$a
-inoremap <space><space>dd <esc><Right>d$a
-"  用于在插入模式下将上一次的操作撤回
-inoremap <space><space>z <esc>:undo<cr>i
-"  用于在正常|插入模式下将上一次的撤回操作撤回
-nnoremap <space>r :redo<cr>i<Right>
-inoremap <space><space>r <esc>:redo<cr>i<Right>
+" ==== 我自己设置的快捷键(注意: 插入模式下的快捷键少点比较好, 反正换到正常模式按jf键也快) ====
 
+"  用于在正常|插入模式下点按<;:>键+<'">键进入底行模式
+nnoremap ;' :
+inoremap ;' <esc>:
+"  用于在正常模式下将光标后面所有的文字删除, 仅限于光标所在行
+nnoremap bd d$a
+"  用于在正常模式下将上一次的撤回操作撤回
+nnoremap <c->r :redo<cr>i<Right>
 
 " 这是一个被注释掉的命令，如果取消注释（去掉前面的双引号），它会执行 source 命令来加载用户主目录下的 .vim-complex 文件。这个文件可能包含更复杂的 Vim 配置。
 source ~/.vimrc-complex
